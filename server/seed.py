@@ -1,23 +1,21 @@
-#!/usr/bin/env python3
-
 from app import app
 from models import db, Bakery, BakedGood
 
 with app.app_context():
-
     BakedGood.query.delete()
     Bakery.query.delete()
-    
-    bakeries = []
-    bakeries.append(Bakery(name='Delightful donuts'));
-    bakeries.append(Bakery(name='Incredible crullers'));
-    db.session.add_all(bakeries)
 
-    baked_goods = []
-    baked_goods.append(BakedGood(name='Chocolate dipped donut', price=2.75, bakery=bakeries[0]));
-    baked_goods.append(BakedGood(name='Apple-spice filled donut', price=3.50, bakery=bakeries[0]));
-    baked_goods.append(BakedGood(name='Glazed honey cruller', price=3.25, bakery=bakeries[1]));
-    baked_goods.append(BakedGood(name='Chocolate cruller', price=3.40, bakery=bakeries[1]));
+    bakery1 = Bakery(name="Sunrise Bakery")
+    bakery2 = Bakery(name="Moonlight Bakery")
 
-    db.session.add_all(baked_goods)
+    db.session.add_all([bakery1, bakery2])
     db.session.commit()
+
+    bg1 = BakedGood(name="Croissant", price=3.50, bakery_id=bakery1.id)
+    bg2 = BakedGood(name="Sourdough", price=4.25, bakery_id=bakery1.id)
+    bg3 = BakedGood(name="Bagel", price=2.00, bakery_id=bakery2.id)
+
+    db.session.add_all([bg1, bg2, bg3])
+    db.session.commit()
+
+    print("🌱 Database seeded!")
